@@ -1,0 +1,96 @@
+<html>
+<head>
+	<title> Snake Game </title>
+</head>
+<body>
+	<canvas id="stage" width="400" height="400" 
+	style="border-radius: 10px;">
+	</canvas>
+
+	<script type="text/javascript">		
+		window.onload = alert('Use as setas para se movimentar. \n By: Caroline Marques :D ');
+		window.onload = function (){	
+			var stage = document.getElementById('stage');
+			var ctx   = stage.getContext("2d");
+			document.addEventListener("keydown",keyPush);
+			setInterval (game, 120); // Define um intervalo p uma função ser chamada.
+			
+			const vel = 1; // Casas que serão andadas-> velocidade
+						
+			var vx = 0; // velocidade x e y.
+			var vy = 0;
+			var px = 10;
+			var py = 15; // Ponto inicial
+			var tp = 20; //tamanho das casas do tabuleiro
+			var qp = 20; // Quantidade de peças
+			var ax=ay= 15;  // Posição da maça
+			var trail = []; //Rastro
+			
+			tail = 5;
+			
+			function game(){
+				px += vx;
+				py += vy;
+				if (px<0) {    //Caso chegue no final do tabuleiro.
+					px = qp - 1;
+				}
+				if (px > qp-1){
+					px= 0;
+				}
+				if (py < 0){
+					py = qp-1;
+				}
+				if (py > qp-1){
+					py = 0;
+				}					
+				ctx.fillStyle = "black";  //Pinta o tabuleiro
+				ctx.fillRect(0,0, stage.width, stage.height);
+			
+				ctx.fillStyle = "red";
+				ctx.fillRect(ax*tp, ay*tp, tp,tp);
+			
+				ctx.fillStyle = "gray";
+				for (var i = 0; i < trail.length; i++){
+					ctx.fillRect(trail[i].x*tp, trail[i].y*tp, tp,tp);
+					if(trail[i].x == px && trail[i].y == py){ //verificação de fim de jogo
+						vx = vy = 0;
+						tail = 5;		
+					}
+				}
+				trail.push({x:px,y:py})
+				while (trail.length > tail){
+					trail.shift();
+				}
+				if (ax == px && ay==py){  //regerando maça
+					tail++;
+					ax = Math.floor(Math.random()*qp);
+					ay = Math.floor(Math.random()*qp);
+				}
+			}	
+			// Movimentaçao
+			function keyPush (event){
+				switch (event.keyCode){
+					case 37: //left
+						vx = -vel;
+						vy = 0;
+						break;
+					case 38: //up
+						vx = 0;
+						vy = -vel;
+						break;
+					case 39: //right
+						vx = vel;
+						vy = 0;
+						break;
+					case 40: //down
+						vx = 0;
+						vy = vel;
+						break;
+					default:
+						break;
+				}
+			}
+		}
+		</script>
+	</body>
+</html>
